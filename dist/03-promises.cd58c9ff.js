@@ -557,7 +557,39 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"8tzFL":[function(require,module,exports) {
+var _notiflix = require("notiflix");
+const refs = {
+    form: document.querySelector(".form"),
+    inputDelay: document.querySelector('input[name="delay"]'),
+    inputStep: document.querySelector('input[name="step"]'),
+    inputAmout: document.querySelector('input[name="amount"]')
+};
+function createPromise(position, delay) {
+    const shouldResolve = Math.random() > 0.3;
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            if (shouldResolve) resolve({
+                position,
+                delay
+            });
+            else reject({
+                position,
+                delay
+            });
+        }, delay);
+    });
+}
+const submitForm = (event)=>{
+    event.preventDefault();
+    let delay = Number(refs.inputDelay.value);
+    for(let i = 1; i <= refs.inputAmout.value; i += 1){
+        console.log(delay);
+        createPromise(i, delay).then(({ position , delay  })=>(0, _notiflix.Notify).success(`✅ Fulfilled promise ${position} in ${delay}ms`)).catch(({ position , delay  })=>(0, _notiflix.Notify).failure(`❌ Rejected promise ${position} in ${delay}ms`));
+        delay = Number(refs.inputDelay.value) + Number(refs.inputStep.value) * i;
+    }
+};
+refs.form.addEventListener("submit", submitForm);
 
-},{}]},["2uA9t","8tzFL"], "8tzFL", "parcelRequired7c6")
+},{"notiflix":"5WWYd"}]},["2uA9t","8tzFL"], "8tzFL", "parcelRequired7c6")
 
 //# sourceMappingURL=03-promises.cd58c9ff.js.map
